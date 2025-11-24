@@ -1,31 +1,23 @@
 <template>
-  <div>
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png">
+    <h1>메인 페이지</h1>
+    <p>나만의 홈페이지에 오신 것을 환영합니다.</p>
 
-    <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/login">Login</router-link>
-      <router-link to="/register">Register</router-link>
-      <button v-if="isLoggedIn" @click="handleLogout">Logout</button>
-    </nav>
-
-    <h1>홈 페이지</h1>
-    <p v-if="user">환영합니다. {{ user.name }}!</p>
+    <div v-if="authStore.isLoggedIn">
+      <p>{{ authStore.user?.name }}님, 오늘도 즐거운 코딩 되세요!</p>
+    </div>
+    <div v-else>
+      <p>서비스를 이용하시려면 로그인이 필요합니다.</p>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useAuthStore } from '../stores/auth'
-import { useRouter } from 'vue-router'
-import { computed } from "vue";
 
 const authStore = useAuthStore()
-const router = useRouter()
-
-const user = computed(() => authStore.user)
-const isLoggedIn = computed(() => authStore.isLoggedIn)
-
-function handleLogout() {
-  authStore.logout()
-  router.push('/login') // 로그아웃 후 로그인 페이지로 이동
-}
 </script>
+
+<style>
+</style>

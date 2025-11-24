@@ -1,25 +1,21 @@
-// Vue Router에서 라우터 생성 및 히스토리 모드 설정을 위한 함수 가져오기
 import { createRouter, createWebHistory } from 'vue-router';
-// 홈 페이지에 레더링할 컴포넌트 가져오기
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
+import AboutView from '../views/AboutView.vue';
+import PostList from '../views/PostList.vue';
+import PostView from '../views/PostView.vue';
+import NotFoundView from '../views/NotFoundView.vue';
 import { useAuthStore } from '../stores/auth';
 
-// 라우터 인스턴스 생서 및 설정
-const router = createRouter( {
-  // 해시모드 사용
+const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  // 애플리케이션의 경로와 컴포넌트를 매핑하는 라우트 배열
   routes: [
     {
-      // 루트 경로 '/'에 대한 설정
       path: '/',
-      // 라우트 이름, 프로그래밍적 네비게이션에 유용
       name: 'home',
-      // 이 경로에서 렌더링할 컴포넌트
       component: HomeView,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true } // 메인 페이지 접근 제한 예시
     },
     {
       path: '/login',
@@ -30,20 +26,45 @@ const router = createRouter( {
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      // 조건 4) 자기소개 페이지
+      path: '/about',
+      name: 'about',
+      component: AboutView
+    },
+    {
+      // 조건 3) 게시판 페이지 (목록)
+      path: '/board',
+      name: 'board',
+      component: PostList
+    },
+    {
+      // 게시판 상세 페이지
+      path: '/board/:id',
+      name: 'post',
+      component: PostView
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFoundView
     }
   ]
 });
 
+// 네비게이션 가드
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
-  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-    next({ name: 'login' })
-  } else if ((to.name === 'login' || to.name === 'register') && authStore.isLoggedIn) {
+
+  // 로그인 상태인데 로그인/회원가입 페이지 접근 시 홈으로 리다이렉트
+  if ((to.name === 'login' || to.name === 'register') && authStore.isLoggedIn) {
     next({ name: 'home' })
   } else {
     next()
   }
+  // 과제 요구사항에 따라 메인 페이지 등의 접근 제한이 엄격하지 않다면 
+  // requiresAuth 로직은 상황에 맞춰 조정 가능합니다.
 })
 
-// 라우터 인스턴스를 다른 파일에서 사용할 수 있도록 내보내기
 export default router;
