@@ -12,29 +12,32 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes: [
     {
+      // 메인 페이지
       path: '/',
       name: 'home',
       component: HomeView,
       meta: { requiresAuth: true } // 메인 페이지 접근 제한 예시
     },
     {
+      // 로그인 페이지
       path: '/login',
       name: 'login',
       component: LoginView
     },
     {
+      // 회원가입 페이지
       path: '/register',
       name: 'register',
       component: RegisterView
     },
     {
-      // 조건 4) 자기소개 페이지
+      // 자기소개 페이지
       path: '/about',
       name: 'about',
       component: AboutView
     },
     {
-      // 조건 3) 게시판 페이지 (목록)
+      // 게시판 페이지 (목록)
       path: '/board',
       name: 'board',
       component: PostList
@@ -63,8 +66,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-  // 과제 요구사항에 따라 메인 페이지 등의 접근 제한이 엄격하지 않다면 
-  // requiresAuth 로직은 상황에 맞춰 조정 가능합니다.
 })
 
 export default router;

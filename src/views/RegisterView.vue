@@ -107,9 +107,8 @@ const onSubmit = (values) => {
 </script>
 
 <style scoped>
-/* LoginView와 동일한 스타일 적용 */
 .auth-container {
-  max-width: 500px; /* 회원가입 폼은 항목이 많아 조금 더 넓게 */
+  max-width: 500px;
   margin: 50px auto;
   padding: 40px;
   border: 1px solid #e0e0e0;
@@ -149,6 +148,7 @@ label {
   box-sizing: border-box;
   font-size: 16px;
   transition: border-color 0.3s;
+  font-family: inherit;
 }
 
 .form-control:focus {
